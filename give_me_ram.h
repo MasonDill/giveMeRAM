@@ -13,14 +13,14 @@
 #include <stdbool.h>
 #include "platform/gmr_platform.h"
 
-#define RAM_LIST_TERMINATOR NULL
+#define GMR_ENTRY_TERMINATOR NULL
 
 typedef struct gmr_heap_entry gmr_heap_entry_t;
 
 struct gmr_heap_entry {
     bool is_allocated;
-    /** @brief pointer to the next free block */
-    gmr_heap_entry_t* next_free;
+    /** @brief pointer to the next entry */
+    gmr_heap_entry_t* next_entry;
     /** @brief size of  */
     uint8_t entry_size;
     /** @brief NOT THE ACTUAL DATA - a pointer to the actual data
@@ -34,11 +34,11 @@ struct gmr_heap_entry {
  */
 typedef struct {
     /** @brief pointer to the start of the heap */
-    uint8_t* start;
+    gmr_heap_entry_t* pStartEntry;
+    /** @brief pointer to the end of the heap */
+    gmr_heap_entry_t* pEndEntry;
     /** @brief size of the heap */
-    long long size;
-    /** @brief pointer to the first free block */
-    gmr_heap_entry_t* free_head;
+    size_t size;
 } gmr_heap_t;
 
 
@@ -49,7 +49,7 @@ typedef struct {
  * @param start 
  * @param size 
  */
-void gmr_heap_init(gmr_heap_t* heap, uint8_t* start, long long size);
+void gmr_heap_init();
 
 /**
  * @brief allocate memory
